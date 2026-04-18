@@ -1,0 +1,27 @@
+services:
+  eclipse:
+    build:
+      context: ./containers/eclipse
+      dockerfile: Containerfile
+      args:
+        UID: "${UID}"
+        GID: "${GID}"
+    env_file:
+      - "./.env"
+    environment:
+      DISPLAY: "${DISPLAY:-:0}"
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./workspace:/home/user/eclipse-workspace"
+      - "./eclipse:/opt/eclipse"
+      - "/mnt/wslg/.X11-unix:/tmp/.X11-unix:ro"
+  mysql:
+    image: docker.io/library/mysql:8.0-bookworm
+    env_file:
+      - "./.env"
+    volumes:
+      - "mysql_data:/var/lib/mysql"
+
+volumes:
+  mysql_data: {}
